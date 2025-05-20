@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Интернет-магазин аудио аксессуаров
 
-## Getting Started
+## Описание проекта
+Проект представляет собой интернет-магазин аудио аксессуаров с двумя основными страницами: каталог товаров и корзина. Реализован на React с использованием React Router для навигации. Для стилизации можно выбрать любой подход (CSS, SASS, styled-components и т.д.). Типизация с использованием TypeScript приветствуется.
 
-First, run the development server:
+## Основные требования к проекту
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Страницы
+- **Каталог товаров**: Отображает карточки товаров с изображением, названием, ценой и рейтингом.
+- **Корзина**: Показывает выбранные товары, их количество, общую сумму и позволяет изменять количество или удалять товары.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Роутинг
+- Реализовать удобный и масштабируемый роутинг с использованием React Router.
+- Переход между страницами должен быть плавным и интуитивно понятным.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Интерактивность
+- Все интерактивные элементы (ссылки, иконки) должны реагировать на наведение (hover-эффекты).
+- Дополнительно: добавить ссылки на социальные сети или номер телефона.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load Inter, a custom Google Font.
+### 4. Навигация
+- Реализовать переход из корзины на главную страницу через логотип или кнопку "Назад".
 
-## Learn More
+### 5. Функционал корзины
+- При нажатии на кнопку "Купить" в карточке товара счетчик в корзине должен увеличиваться.
+- При изменении количества товаров в корзине должна пересчитываться общая сумма и количество товаров.
 
-To learn more about Next.js, take a look at the following resources:
+### 6. Хранение данных
+- Данные о товарах должны храниться в виде массива объектов, например:
+  ```javascript
+  const headphones = [
+    {
+      img: "./assets/S852.png",
+      title: "Apple BYZ S852I",
+      price: 2927,
+      rate: 4.7,
+    },
+    // Другие товары...
+  ];
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Запуск
+(Для запуска рекомендуется использовать yarn)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Доступные команды
 
-## Deploy on Vercel
+<p>В этом проекте вы можете пользоваться следующими скриптами:</p>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Скрипт     | Описание                                                                 |
+| ---------- | ------------------------------------------------------------------------ |
+| dev        | Запускает приложение в режиме разработки.                                |
+| build      | Собирает приложение для production в папку `dist`.                       |
+| lint       | Запускает Eslint для проверки кода на ошибки.                           |
+| format     | Запускает Prettier для автоматического форматирования кода.              |
+| preview    | Собирает приложение для production в папку `dist` и запускает локальный сервер для просмотра. |
+| test       | Запускает тесты приложения.                                              |
+| test:watch | Запускает тесты приложения в режиме отслеживания изменений (watch mode). |
