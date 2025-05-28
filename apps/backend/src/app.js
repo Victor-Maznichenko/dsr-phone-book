@@ -3,20 +3,9 @@ const app = express();
 const routes = require('./routes');
 const { body, validationResult } = require('express-validator');
 
+/* middleware берущие данные из body и преобразовывают в нужный нам формат (JS обьект) */
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-app.post('/users', 
-  body('email').isEmail(),
-  body('name').notEmpty(),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  },
-  routes
-);
 
 app.use('/api', routes);
 
