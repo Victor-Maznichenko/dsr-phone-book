@@ -38,9 +38,14 @@
         JWT_SECRET=your_jwt_secret
 	```
 
-2. **Запуск миграций**:<br>
-    `cd server` <br>
-    `npx sequelize-cli db:migrate`
+2. **Запуск миграций и заполнение данными**:<br>
+    ```
+        # Применяем ВСЕ миграции в папке (в порядке их создания)
+        npx sequelize-cli db:migrate
+
+        # Затем заполняем данные
+        npx sequelize-cli db:seed:all
+    ```
     
 3. Запуск проекта:
     ```

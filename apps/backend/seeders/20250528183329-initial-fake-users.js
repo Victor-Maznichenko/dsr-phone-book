@@ -34,7 +34,7 @@ module.exports = {
     }
 
     // Вставляем пользователей
-    const insertedUsers = await queryInterface.bulkInsert('Users', users, { returning: true });
+    const insertedUsers = await queryInterface.bulkInsert('users', users, { returning: true });
 
     // Добавляем личные телефоны
     insertedUsers.forEach(user => {
@@ -50,11 +50,11 @@ module.exports = {
       }
     });
 
-    await queryInterface.bulkInsert('UserPhones', userPhones);
+    await queryInterface.bulkInsert('user_phones', userPhones);
   },
 
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete('Users', null, {});
-    await queryInterface.bulkDelete('UserPhones', null, {});
+    await queryInterface.bulkDelete('users', null, {});
+    await queryInterface.bulkDelete('user_phones', null, {});
   }
 };

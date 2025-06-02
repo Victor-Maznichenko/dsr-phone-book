@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('UserPhones', {
+    await queryInterface.createTable('user_phones', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',   // Связь с таблицей Users
+          model: 'users',
           key: 'id'
         },
         onDelete: 'CASCADE' // Удалить телефоны при удалении пользователя

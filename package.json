@@ -16,6 +16,9 @@
   "engines": {
     "node": ">=18"
   },
+  "sequelize": {
+    "config": "config/config.js"
+  },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",

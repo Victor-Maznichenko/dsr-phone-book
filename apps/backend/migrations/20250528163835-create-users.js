@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('users', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -32,7 +32,8 @@ module.exports = {
       },
       workPhone: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       position: Sequelize.STRING,
       department: Sequelize.STRING,
@@ -49,10 +50,10 @@ module.exports = {
     });
     
     // Индекс для поиска по имени
-    await queryInterface.addIndex('Users', ['fullName']);
+    await queryInterface.addIndex('users', ['fullName']);
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('users');
   }
 };

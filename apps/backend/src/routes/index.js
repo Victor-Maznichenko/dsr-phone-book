@@ -1,18 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-/* USERS */
+const middlewares = require('../middlewares');
 const userController = require('../controllers/userController');
-
-router.get('/users', userController.getUsers);
-router.post('/users', userController.createUser);
-router.put('/users/:id', userController.updateUser);
-router.delete('/users/:id', userController.deleteUser);
-
-/* AUTH */
 const authController = require('../controllers/authController');
 
-router.get('/registration', authController.registration);
+/* AUTH */
+router.post('/registration', authController.registration);
 router.post('/login', authController.login);
+
+/* USERS (Protected Routes) */
+router.get('/users', middlewares.verifyAccessToken, userController.getUsers);
+
+/* ФУНКЦИОНАЛ ДЛЯ АДМИНОВ
+router.post('/users', middlewares.verifyAccessToken, userController.createUser);
+router.put('/users/:id', middlewares.verifyAccessToken, userController.updateUser);
+router.delete('/users/:id', middlewares.verifyAccessToken, userController.deleteUser); */
 
 module.exports = router;

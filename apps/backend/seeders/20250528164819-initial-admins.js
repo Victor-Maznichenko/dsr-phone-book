@@ -26,11 +26,11 @@ module.exports = {
       }
     ];
 
-    await queryInterface.bulkInsert('Users', admins);
+    await queryInterface.bulkInsert('users', admins);
   },
 
   down: async (queryInterface) => {
-    await queryInterface.bulkDelete('Users', {
+    await queryInterface.bulkDelete('users', {
       email: { [Sequelize.Op.in]: ['admin1@example.com', 'admin2@example.com'] }
     });
   }
