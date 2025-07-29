@@ -1,0 +1,766 @@
+openapi: 3.0.4
+info:
+  title: DSR Phonebook API
+  version: 0.0.1
+servers:
+- url: http://localhost:3000
+security:
+- bearerAuth: []
+paths:
+  /auth/register:
+    post:
+      description: Регистрирует нового пользователя и возвращает access token.
+      operationId: authRegisterPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_auth_register_post_201_response"
+          description: Created
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security: []
+      summary: Регистрация пользователя
+      tags:
+      - Auth
+      x-eov-operation-handler: controllers/AuthController
+  /auth/login:
+    post:
+      operationId: authLoginPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/_auth_login_post_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_auth_login_post_200_response"
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security: []
+      summary: Авторизация пользователя
+      tags:
+      - Auth
+      x-eov-operation-handler: controllers/AuthController
+  /admin/auth/login:
+    post:
+      operationId: adminAuthLoginPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/_auth_login_post_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_auth_login_post_200_response"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security: []
+      summary: Авторизация администратора
+      tags:
+      - Auth
+      x-eov-operation-handler: controllers/AuthController
+  /auth/refresh:
+    post:
+      description: |
+        Обновляет просроченный access токен.  Refresh токен должен быть отправлен автоматически браузером как `HttpOnly` cookie.
+      operationId: authRefreshPOST
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/_auth_refresh_post_200_response"
+          description: Успешное обновление access токена
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+          description: Refresh токен невалиден или просрочен
+        "500":
+          description: Внутренняя ошибка сервера
+      security: []
+      summary: Получение нового access токена по refresh токену из cookie HttpOnly
+      tags:
+      - Auth
+      x-eov-operation-handler: controllers/AuthController
+  /users:
+    get:
+      operationId: getAllUsers
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+          description: "Максимальное число записей"
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: "Сдвиг (skipping) записей"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UserResponse"
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Получение данных о пользователях
+      tags:
+      - Users
+      x-eov-operation-handler: controllers/UsersController
+  /users/{userId}:
+    delete:
+      operationId: deleteUserById
+      x-roles:
+        - admin
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Удаление пользователя по переданному ID
+      tags:
+      - Users
+      x-eov-operation-handler: controllers/UsersController
+    get:
+      operationId: getUserById
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Получение данных о пользователе по переданному ID
+      tags:
+      - Users
+      x-eov-operation-handler: controllers/UsersController
+    patch:
+      operationId: patchUserById
+      parameters:
+      - explode: false
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Изменение данных пользователя по переданному ID (for admins)
+      tags:
+      - Users
+      x-eov-operation-handler: controllers/UsersController
+  /profile:
+    delete:
+      operationId: deleteProfile
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Удаление своего профиля (аккаунта)
+      tags:
+      - Profile
+      x-eov-operation-handler: controllers/ProfileController
+    get:
+      operationId: getProfile
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Получение данных о профиле
+      tags:
+      - Profile
+      x-eov-operation-handler: controllers/ProfileController
+    patch:
+      operationId: patchProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Изменение данных профиля
+      tags:
+      - Profile
+      x-eov-operation-handler: controllers/ProfileController
+  /requests:
+    get:
+      operationId: getAllAccessRequests
+      x-roles:
+        - admin
+      parameters:
+      - description: Фильтр по статусу запроса
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          $ref: "#/components/schemas/RequestStatus"
+        style: form
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+        description: "Максимальное число записей"
+      - in: query
+        name: offset
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        description: "Сдвиг (skipping) записей"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AccessRequest"
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Получение данных о запросах
+      tags:
+      - Access requests
+      x-eov-operation-handler: controllers/AccessRequestsController
+    post:
+      operationId: postAccessRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/postAccessRequest_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Формирование нового запроса на получение личных данных пользователя
+      tags:
+      - Access requests
+      x-eov-operation-handler: controllers/AccessRequestsController
+  /requests/{requestId}:
+    patch:
+      operationId: patchAccessRequest
+      x-roles:
+        - admin
+      parameters:
+      - explode: false
+        in: path
+        name: requestId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/patchAccessRequest_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/AccessRequest"
+                type: array
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: Изменение статуса запроса
+      tags:
+      - Access requests
+      x-eov-operation-handler: controllers/AccessRequestsController
+components:
+  schemas:
+    UserDTO:
+      properties:
+        firstName:
+          example: John
+          type: string
+        lastName:
+          example: James
+          type: string
+        birthday:
+          description: Дата рождения в формате YYYY-MM-DD
+          example: 2005-08-01
+          format: date
+          type: string
+        email:
+          description: Адрес электронной почты
+          example: john@mail.ru
+          format: email
+          type: string
+        officePhone:
+          $ref: "#/components/schemas/PhoneNumber"
+        personalPhones:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/PhoneNumber"
+        department:
+          $ref: "#/components/schemas/Department"
+        position:
+          $ref: "#/components/schemas/Position"
+        officeAddress:
+          description: |
+            Рабочий адрес сотрудника. Указывается в свободной форме.
+          example: "ул. Ленина, д. 10, офис 201, Москва, Россия"
+          maxLength: 255
+          minLength: 10
+          type: string
+        about:
+          example: Люблю собак и кошек :)
+          type: string
+        avatar:
+          description: "URL изображения аватара пользователя или null, если аватар\
+            \ не установлен"
+          example: https://example.com/avatars/user123.png
+          format: uri
+          nullable: true
+          type: string
+      type: object
+    UserResponse:
+      allOf:
+      - $ref: "#/components/schemas/UserDTO"
+      - properties:
+          id:
+            format: int64
+            readOnly: true
+            type: integer
+          hasPersonalAccess:
+            description: |
+              Показывает, есть ли у пользователя доступ к личным данным
+              Если пользователь Администратор, то hasPersonalAccess === null
+            nullable: true
+            type: boolean
+        required:
+        - birthday
+        - department
+        - email
+        - firstName
+        - id
+        - lastName
+        - officeAddress
+        - officePhone
+        - position
+        type: object
+      example:
+        birthday: 2005-08-01
+        lastName: James
+        about: Люблю собак и кошек :)
+        avatar: https://example.com/avatars/user123.png
+        officeAddress: "ул. Ленина, д. 10, офис 201, Москва, Россия"
+        personalPhones:
+        - "+79991234567"
+        - "+79991234567"
+        firstName: John
+        hasPersonalAccess: true
+        officePhone: "+79991234567"
+        position: middle
+        id: 0
+        department: development
+        email: john@mail.ru
+    ProfileResponse:
+      allOf:
+      - $ref: "#/components/schemas/UserResponse"
+      - properties:
+          role:
+            $ref: "#/components/schemas/UserRole"
+        required:
+        - role
+        type: object
+      example:
+        birthday: 2005-08-01
+        lastName: James
+        role: user
+        about: Люблю собак и кошек :)
+        avatar: https://example.com/avatars/user123.png
+        officeAddress: "ул. Ленина, д. 10, офис 201, Москва, Россия"
+        personalPhones:
+        - "+79991234567"
+        - "+79991234567"
+        firstName: John
+        hasPersonalAccess: true
+        officePhone: "+79991234567"
+        position: middle
+        id: 0
+        department: development
+        email: john@mail.ru
+    CreateUserRequest:
+      allOf:
+      - $ref: "#/components/schemas/UserDTO"
+      - properties:
+          password:
+            $ref: "#/components/schemas/Password"
+        required:
+        - birthday
+        - department
+        - email
+        - firstName
+        - lastName
+        - officeAddress
+        - officePhone
+        - password
+        - position
+        type: object
+      example:
+        birthday: 2005-08-01
+        personalPhones:
+        - "+79991234567"
+        - "+79991234567"
+        firstName: John
+        lastName: James
+        password: qwertY1234%
+        officePhone: "+79991234567"
+        about: Люблю собак и кошек :)
+        position: middle
+        avatar: https://example.com/avatars/user123.png
+        department: development
+        officeAddress: "ул. Ленина, д. 10, офис 201, Москва, Россия"
+        email: john@mail.ru
+    UpdateProfileRequest:
+      allOf:
+      - $ref: "#/components/schemas/UserDTO"
+      - properties:
+          password:
+            example: qwertY1234%
+            format: password
+            pattern: "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/"
+            type: string
+          role:
+            $ref: "#/components/schemas/UserRole"
+        type: object
+      example:
+        birthday: 2005-08-01
+        lastName: James
+        role: user
+        about: Люблю собак и кошек :)
+        avatar: https://example.com/avatars/user123.png
+        officeAddress: "ул. Ленина, д. 10, офис 201, Москва, Россия"
+        personalPhones:
+        - "+79991234567"
+        - "+79991234567"
+        firstName: John
+        password: qwertY1234%
+        officePhone: "+79991234567"
+        position: middle
+        department: development
+        email: john@mail.ru
+    AccessRequest:
+      example:
+        requesterId: 6
+        targetUserId: 1
+        id: 0
+        status: pending
+      properties:
+        id:
+          description: Уникальный идентификатор запроса
+          format: int64
+          readOnly: true
+          type: integer
+        requesterId:
+          description: "ID пользователя, который сделал запрос"
+          format: int64
+          readOnly: true
+          type: integer
+        targetUserId:
+          description: "ID пользователя, к чьим данным запрашивается доступ"
+          format: int64
+          type: integer
+        status:
+          $ref: "#/components/schemas/RequestStatus"
+      required:
+      - id
+      - requesterId
+      - status
+      - targetUserId
+      type: object
+    Error:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ApiResponse:
+      example:
+        code: 0
+        type: type
+        message: message
+      properties:
+        code:
+          format: int32
+          type: integer
+        type:
+          type: string
+        message:
+          type: string
+      type: object
+    Department:
+      description: |
+        Название отдела, к которому принадлежит пользователь. Возможные значения:
+          - sales — Отдел продаж
+          - marketing — Маркетинг
+          - development — Разработка
+          - hr — Кадровый отдел
+          - support — Техническая поддержка
+      enum:
+      - sales
+      - marketing
+      - development
+      - hr
+      - support
+      example: development
+      type: string
+    Position:
+      description: |
+        Должность или уровень сотрудника. Возможные значения:
+        - intern — Стажёр
+        - junior — Джуниор
+        - middle — Мидл
+        - senior — Сеньор
+        - lead — Тимлид
+        - architect — Архитектор
+      enum:
+      - intern
+      - junior
+      - middle
+      - senior
+      - lead
+      - architect
+      example: middle
+      type: string
+    RequestStatus:
+      description: Статус запроса на доступ к личным данным
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+    UserRole:
+      enum:
+      - user
+      - admin
+      type: string
+    Email:
+      description: Адрес электронной почты
+      example: john@mail.ru
+      format: email
+      type: string
+    Password:
+      example: qwertY1234%
+      format: password
+      pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+      type: string
+    PhoneNumber:
+      description: |
+        Телефон в международном формате E.164
+      example: "+79991234567"
+      pattern: '^\+?[1-9]\d{1,14}$'
+      type: string
+    _auth_register_post_201_response:
+      example:
+        accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      properties:
+        accessToken:
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+          type: string
+      type: object
+    _auth_login_post_request:
+      properties:
+        email:
+          description: Адрес электронной почты
+          example: john@mail.ru
+          format: email
+          type: string
+        password:
+          example: qwertY1234%
+          format: password
+          pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+          type: string
+      required:
+      - email
+      - password
+      type: object
+    _auth_login_post_200_response:
+      example:
+        accessToken: accessToken
+      properties:
+        accessToken:
+          type: string
+      type: object
+    _auth_refresh_post_200_response:
+      example:
+        accessToken: accessToken
+      properties:
+        accessToken:
+          description: Новый access токен
+          type: string
+      required:
+      - accessToken
+      type: object
+    postAccessRequest_request:
+      properties:
+        targetUserId:
+          description: "ID пользователя, к чьим данным запрашивается доступ"
+          format: int64
+          type: integer
+      required:
+      - targetUserId
+      type: object
+    patchAccessRequest_request:
+      properties:
+        status:
+          $ref: "#/components/schemas/RequestStatus"
+      required:
+      - status
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
