@@ -16,8 +16,10 @@
     "@mantine/hooks": "^8.2.2",
     "@types/react": "19",
     "@types/react-dom": "19",
+    "ky": "^1.8.2",
     "react": "19",
-    "react-dom": "19"
+    "react-dom": "19",
+    "react-router": "^7.7.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
