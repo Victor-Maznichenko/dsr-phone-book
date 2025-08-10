@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { App } from './app';
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import '@mantine/dropzone/styles.css';
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+  cursorType: 'pointer',
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider theme={theme}>
+    <MantineProvider defaultColorScheme="dark" theme={theme}>
       <App />
     </MantineProvider>
   </React.StrictMode>,

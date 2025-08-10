@@ -1,7 +1,9 @@
-// import { AppShell } from '@mantine/core';
-import { getUsers } from './api/requests';
+import { RouterProvider } from 'react-router';
+import { AppShell } from '@mantine/core';
+import { router } from './constants/router';
 
-console.log('START');
-getUsers();
-
-export const App = () => <>App</>;
+export const App = () => (
+  <AppShell>
+    <RouterProvider router={router} />
+  </AppShell>
+);

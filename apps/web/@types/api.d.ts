@@ -1,24 +1,4 @@
-enum Department {
-  HR = 'hr',
-  Sales = 'sales',
-  Support = 'support',
-  Marketing = 'marketing',
-  Development = 'development',
-}
-
-enum Position {
-  Intern = 'intern',
-  Junior = 'junior',
-  Middle = 'middle',
-  Senior = 'senior',
-  Lead = 'lead',
-  Architect = 'architect',
-}
-
-enum UserRole {
-  Default = 'default',
-  Admin = 'admin',
-}
+// TODO: Я не могу использовать const но обычный enum это хуйня насколько я помню
 
 interface UserDTO {
   email: string;
@@ -31,17 +11,19 @@ interface UserDTO {
   officeAddress: string;
   personalPhones?: string[];
   about?: string;
-  avatar?: string;
+  avatar?: Nullable<File>;
 }
 
 interface PostRegisterParams extends UserDTO {
   password: string;
 }
 
-interface PostLoginParams {
+interface UserCredentials {
   email: string;
   password: string;
 }
+
+type UserPersonalInfo = Omit<PostRegisterParams, keyof UserCredentials>;
 
 interface UserResponse extends UserDTO {
   id: number;

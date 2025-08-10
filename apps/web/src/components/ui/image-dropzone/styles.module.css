@@ -1,0 +1,53 @@
+.dropzone {
+    border-radius: var(--mantine-radius-md);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.attachedImageBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.attachedImageBox::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--mantine-color-dark-5);
+    transition: all .3s;
+    opacity: 0.4;
+}
+
+.attachedImagePlus {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+}
+
+.dropzone:hover .attachedImageBox::after {
+    opacity: 1;
+}
+
+.attachedImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.dropzoneContent {
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--mantine-spacing-xl);
+}
