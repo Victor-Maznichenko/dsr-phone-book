@@ -20,9 +20,9 @@ paths:
       responses:
         "201":
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: "#/components/schemas/_auth_register_post_201_response"
+                type: string
           description: Created
         "400":
           description: Bad Request
@@ -45,9 +45,9 @@ paths:
       responses:
         "200":
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: "#/components/schemas/_auth_login_post_200_response"
+                type: string
           description: OK
         "400":
           description: Bad Request
@@ -70,9 +70,9 @@ paths:
       responses:
         "200":
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: "#/components/schemas/_auth_login_post_200_response"
+                type: string
           description: OK
         "400":
           description: Bad Request
@@ -93,9 +93,9 @@ paths:
       responses:
         "200":
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: "#/components/schemas/_auth_refresh_post_200_response"
+                type: string
           description: Успешное обновление access токена
         "401":
           content:
@@ -702,14 +702,6 @@ components:
       example: "+79991234567"
       pattern: '^\+?[1-9]\d{1,14}$'
       type: string
-    _auth_register_post_201_response:
-      example:
-        accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-      properties:
-        accessToken:
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-          type: string
-      type: object
     _auth_login_post_request:
       properties:
         email:
@@ -725,23 +717,6 @@ components:
       required:
       - email
       - password
-      type: object
-    _auth_login_post_200_response:
-      example:
-        accessToken: accessToken
-      properties:
-        accessToken:
-          type: string
-      type: object
-    _auth_refresh_post_200_response:
-      example:
-        accessToken: accessToken
-      properties:
-        accessToken:
-          description: Новый access токен
-          type: string
-      required:
-      - accessToken
       type: object
     postAccessRequest_request:
       properties:

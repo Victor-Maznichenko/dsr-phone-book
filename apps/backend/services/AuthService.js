@@ -43,7 +43,7 @@ const adminAuthLoginPOST = async ({ body }, response) => {
   }
 
   // 3) Отдаем accessToken / записываем refreshToken в cookies
-  return { accessToken: generateAuthTokens(user, response) };
+  return Service.successResponse(generateAuthTokens(user, response), 201);
 };
 
 /**
@@ -68,7 +68,7 @@ const authLoginPOST = async ({ body }, response) => {
   }
 
   // 3) Отдаем accessToken / записываем refreshToken в cookies
-  return { accessToken: generateAuthTokens(user, response) };
+  return Service.successResponse(generateAuthTokens(user, response), 201);
 };
 
 /**
@@ -87,7 +87,7 @@ const authRefreshPOST = async ({ cookies }, response) => {
 
     const decoded = jwt.verify(token, config.REFRESH_SECRET);
 
-    return Service.successResponse({ accessToken: generateAuthTokens(decoded, response) });
+    return Service.successResponse(generateAuthTokens(decoded, response), 201);
   } catch (e) {
     throw new AppError(e.message || 'Invalid refresh token', 401);
   }
@@ -109,7 +109,7 @@ const authRegisterPOST = async ({ body }, response) => {
       ['id', 'role']
     );
 
-    return Service.successResponse({ accessToken: generateAuthTokens({ id, role }, response) });
+    return Service.successResponse(generateAuthTokens({ id, role }, response), 201);
   } catch (e) {
     throw new Error(e.message || 'Invalid input');
   }
