@@ -6,7 +6,7 @@ interface UserDTO {
   lastName: string;
   birthday: string;
   officePhone: string;
-  department: Department;
+  department: string;
   position: Position;
   officeAddress: string;
   personalPhones?: string[];
@@ -31,7 +31,7 @@ interface UserResponse extends UserDTO {
 }
 
 interface ProfileResponse extends Omit<UserDTO, 'hasPersonalAccess'> {
-  role: UserRole;
+  role: string;
 }
 
 interface UpdateProfileRequest extends Omit<UserDTO, 'hasPersonalAccess'> {

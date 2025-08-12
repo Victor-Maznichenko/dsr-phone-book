@@ -1,22 +1,15 @@
-import z from 'zod';
 import { useForm } from '@mantine/form';
+import { useNavigate } from 'react-router';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { AppShell, Button, Container, Stack, Text, Title } from '@mantine/core';
 import { PasswordInput, TextInput } from '@/components';
+import { useLoginStore } from '@/store';
+import { schema } from './lib';
 
-export const schema = z.object({
-  email: z.email('This is not a valid email.'),
-  password: z
-    .string()
-    .min(8, 'The password must contain at least 8 characters.')
-    .max(15, 'The password must not be longer than 15 characters.')
-    .regex(/\d/, 'Password must contain at least one number')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[@$!%*?&#]/, 'Password must contain at least one special character'),
-});
-
-export const Login = () => {
+export const LoginPage = ({ isAdmin }: { isAdmin?: boolean }) => {
+  const navigate = useNavigate();
+  const primaryColor = isAdmin ? 'red.6' : 'indigo.8';
+  const { isLoading, submitLogin } = useLoginStore();
   const form = useForm({
     mode: 'controlled',
     initialValues: {
@@ -26,12 +19,15 @@ export const Login = () => {
     validate: zod4Resolver(schema),
   });
 
-  const handleSubmit = (formData: unknown) => console.log(formData);
+  const handleSubmit = async (formData: UserCredentials) => {
+    await submitLogin(formData, isAdmin);
+    navigate('/');
+  };
 
   return (
     <AppShell.Main py={100} ta="center">
       <Container maw={550}>
-        <Title c="indigo.8" mb={6}>
+        <Title c={primaryColor} mb={6}>
           Login here
         </Title>
         <Text size="lg" display="inline-block" mb={50}>
@@ -60,7 +56,15 @@ export const Login = () => {
               error={form.errors.confirmPassword}
             />
           </Stack>
-          <Button type="submit" fullWidth variant="filled" color="indigo" size="xl" radius="lg">
+          <Button
+            type="submit"
+            fullWidth
+            variant="filled"
+            color={primaryColor}
+            size="xl"
+            radius="lg"
+            loading={isLoading}
+          >
             Next
           </Button>
         </form>

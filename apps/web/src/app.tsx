@@ -1,9 +1,35 @@
-import { RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AppShell } from '@mantine/core';
-import { router } from './constants/router';
+import { HomePage, LoginPage, NotFoundPage, RegisterPage } from './pages';
+import { Footer, ProtectedRoute } from './components';
+import { useAuth } from './hooks';
 
-export const App = () => (
-  <AppShell>
-    <RouterProvider router={router} />
-  </AppShell>
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { index: true, element: <HomePage /> },
+          // { path: 'users', element: <UsersPage /> },
+        ],
+      },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
+      { path: 'admin/login', element: <LoginPage isAdmin /> },
+    ],
+  },
+]);
+
+export const App = () => {
+  useAuth();
+
+  return (
+    <AppShell>
+      <RouterProvider router={router} />
+      <Footer />
+    </AppShell>
+  );
+};

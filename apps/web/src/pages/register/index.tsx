@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { AppShell, Container, Stepper } from '@mantine/core';
 import { PersonalStepContent } from './components/personal-step-content';
 import { CompleteStepContent } from './components/complete-step-content';
@@ -8,11 +9,17 @@ import { useRegisterStore } from '@/store';
 // TODO 1: Если все данные уже были заполнены должна быть возможность вернуться на следующие этапы через цифры
 // TODO 2: Местоположение через GOOGLE API или YANDEX API
 export const RegisterPage = () => {
+  const navigate = useNavigate();
   const [active, setActive] = useState(0);
+  const { submitRegistration } = useRegisterStore();
 
   const handleNext = () => setActive((current) => (current < 3 ? current + 1 : current));
   const handlePrev = () => setActive((current) => (current > 0 ? current - 1 : current));
-  const { submitRegistration } = useRegisterStore();
+
+  const handleSubmit = async () => {
+    await submitRegistration();
+    navigate('/');
+  };
 
   return (
     <AppShell.Main py={100} ta="center">
@@ -31,7 +38,7 @@ export const RegisterPage = () => {
             <PersonalStepContent handlePrev={handlePrev} handleNext={handleNext} />
           </Stepper.Step>
           <Stepper.Step>
-            <CompleteStepContent handlePrev={handlePrev} handleComplete={submitRegistration} />
+            <CompleteStepContent handlePrev={handlePrev} handleComplete={handleSubmit} />
           </Stepper.Step>
         </Stepper>
       </Container>

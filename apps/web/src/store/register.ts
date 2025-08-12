@@ -8,10 +8,11 @@ interface RegisterFields extends PostRegisterParams {
 }
 
 interface RegisterState {
+  isLoading: boolean;
   registerFields: RegisterFields;
   setCredentials: (payload: UserCredentials) => void;
   setPersonalInfo: (payload: UserPersonalInfo) => void;
-  submitRegistration: () => void;
+  submitRegistration: () => Promise<void>;
 }
 
 export const useRegisterStore = create<RegisterState>()((set, get) => ({
@@ -31,9 +32,10 @@ export const useRegisterStore = create<RegisterState>()((set, get) => ({
     avatar: null,
   },
   isLoading: false,
-  setCredentials: (payload) => set((state) => ({ ...state, ...payload })),
-  setPersonalInfo: (payload) => set((state) => ({ ...state, ...payload })),
+  setCredentials: (payload) => set((state) => ({ ...state, registerFields: { ...state.registerFields, ...payload } })),
+  setPersonalInfo: (payload) => set((state) => ({ ...state, registerFields: { ...state.registerFields, ...payload } })),
   submitRegistration: async () => {
+    set(({ isLoading, ...state }) => ({ ...state, isLoading: true }));
     try {
       const {
         registerFields: { confirmPassword, ...userData },
@@ -48,6 +50,8 @@ export const useRegisterStore = create<RegisterState>()((set, get) => ({
       // TODO: заменить на toast
       // eslint-disable-next-line no-console
       console.error(error);
+    } finally {
+      set(({ isLoading, ...state }) => ({ isLoading: false, ...state }));
     }
   },
 }));
