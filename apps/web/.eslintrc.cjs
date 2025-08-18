@@ -24,6 +24,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/jsx-no-bind': 'off',
+    'no-restricted-globals': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',

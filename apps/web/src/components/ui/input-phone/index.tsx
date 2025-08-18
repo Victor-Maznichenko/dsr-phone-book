@@ -1,11 +1,12 @@
 import { InputBase, InputBaseProps } from '@mantine/core';
 import { InputMask, InputMaskProps } from '@react-input/mask';
+import { phoneMask } from '@/constants';
 
 type InputPhoneProps = InputBaseProps & Omit<InputMaskProps, 'size'>;
 
 export const InputPhone = ({
-  mask = '+7 (___) ___-__-__',
-  replacement = { _: /\d/ },
+  mask = phoneMask.mask,
+  replacement = phoneMask.replacement,
   variant = 'filled',
   radius = 'md',
   size = 'xl',

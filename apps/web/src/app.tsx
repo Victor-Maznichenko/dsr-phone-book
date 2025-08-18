@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AppShell } from '@mantine/core';
 import { HomePage, LoginPage, NotFoundPage, RegisterPage } from './pages';
-import { Footer, ProtectedRoute } from './components';
+import { Footer, Header, ProtectedRoute } from './components';
 import { useAuth } from './hooks';
 
 const router = createBrowserRouter([
@@ -28,6 +28,7 @@ export const App = () => {
 
   return (
     <AppShell>
+      <Header />
       <RouterProvider router={router} />
       <Footer />
     </AppShell>

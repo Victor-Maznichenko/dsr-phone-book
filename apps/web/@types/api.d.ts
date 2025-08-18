@@ -11,7 +11,7 @@ interface UserDTO {
   officeAddress: string;
   personalPhones?: string[];
   about?: string;
-  avatar?: Nullable<File>;
+  avatar?: Nullable<string>;
 }
 
 interface PostRegisterParams extends UserDTO {

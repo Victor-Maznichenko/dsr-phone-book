@@ -1,9 +1,10 @@
-import { ActionIcon, Anchor, AppShell, Avatar, Badge, Container, Group, Table, Text, Title } from '@mantine/core';
-import { IconPencil, IconTrash, IconExternalLink } from '@tabler/icons-react';
 import { useEffect } from 'react';
 import { format, parseISO } from 'date-fns';
+import { format as formatPhone } from '@react-input/mask';
+import { IconPencil, IconTrash, IconExternalLink } from '@tabler/icons-react';
+import { ActionIcon, Anchor, AppShell, Avatar, Badge, Container, Flex, Paper, Table, Text, Title } from '@mantine/core';
 import { useUsersStore } from '@/store';
-import { DEPARTMENTS } from '@/constants';
+import { DEPARTMENTS, phoneMask } from '@/constants';
 
 const departmentsColors: Record<string, string> = {
   [DEPARTMENTS.HR]: 'pink.5',
@@ -21,14 +22,14 @@ export const HomePage = () => {
   }, []);
 
   const rows = users.map((user) => (
-    <Table.Tr key={user.id}>
-      <Table.Td>
-        <Group gap="sm">
+    <Table.Tr style={{ transition: 'background-color 0.25s' }} key={user.id}>
+      <Table.Td maw={250}>
+        <Flex align="center" gap="sm">
           <Avatar size={30} src={user.avatar} radius={30} />
-          <Text fz="sm" fw={500}>
+          <Text truncate="end" fz="sm" fw={500}>
             {user.firstName} {user.lastName}
           </Text>
-        </Group>
+        </Flex>
       </Table.Td>
 
       <Table.Td>
@@ -45,15 +46,17 @@ export const HomePage = () => {
         <Text fz="sm">{format(parseISO(user.birthday), 'dd.MM.yyyy')}</Text>
       </Table.Td>
       <Table.Td>
-        <Text fz="sm">{user.officePhone}</Text>
+        <Text fz="sm">{formatPhone('79204574579', phoneMask)}</Text>
       </Table.Td>
-      <Table.Td>
-        <Anchor component="button" size="sm">
-          {user.email}
+      <Table.Td maw={220}>
+        <Anchor href={`mailto:${user.email}`}>
+          <Text truncate="end" size="xs">
+            {user.email}
+          </Text>
         </Anchor>
       </Table.Td>
       <Table.Td>
-        <Group gap={0} justify="flex-end">
+        <Flex justify="flex-end">
           <ActionIcon variant="subtle" color="gray">
             <IconPencil size={16} stroke={1.5} />
           </ActionIcon>
@@ -63,30 +66,32 @@ export const HomePage = () => {
           <ActionIcon variant="subtle" color="blue">
             <IconExternalLink size={16} stroke={1.5} />
           </ActionIcon>
-        </Group>
+        </Flex>
       </Table.Td>
     </Table.Tr>
   ));
 
   return (
     <AppShell.Main py={100} ta="center">
-      <Container>
+      <Container size="lg">
         <Title mb="xl">Phone book:</Title>
         <Table.ScrollContainer minWidth={800}>
-          <Table verticalSpacing="sm">
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Employee</Table.Th>
-                <Table.Th ta="center">Department</Table.Th>
-                <Table.Th ta="center">Position</Table.Th>
-                <Table.Th ta="center">Birthday</Table.Th>
-                <Table.Th ta="center">Phone</Table.Th>
-                <Table.Th ta="center">Email</Table.Th>
-                <Table.Th />
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-          </Table>
+          <Paper bdrs={20} withBorder>
+            <Table highlightOnHover horizontalSpacing="md" verticalSpacing="md">
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Employee</Table.Th>
+                  <Table.Th ta="center">Department</Table.Th>
+                  <Table.Th ta="center">Position</Table.Th>
+                  <Table.Th ta="center">Birthday</Table.Th>
+                  <Table.Th ta="center">Office Phone</Table.Th>
+                  <Table.Th ta="center">Email</Table.Th>
+                  <Table.Th />
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>{rows}</Table.Tbody>
+            </Table>
+          </Paper>
         </Table.ScrollContainer>
       </Container>
     </AppShell.Main>

@@ -25,7 +25,7 @@ export const LoginPage = ({ isAdmin }: { isAdmin?: boolean }) => {
   };
 
   return (
-    <AppShell.Main py={100} ta="center">
+    <AppShell.Main py={160} ta="center">
       <Container maw={550}>
         <Title c={primaryColor} mb={6}>
           Login here
@@ -65,7 +65,7 @@ export const LoginPage = ({ isAdmin }: { isAdmin?: boolean }) => {
             radius="lg"
             loading={isLoading}
           >
-            Next
+            Login
           </Button>
         </form>
       </Container>
