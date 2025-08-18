@@ -3,10 +3,8 @@ import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mant
 import { IconMoon, IconSun } from '@tabler/icons-react';
 
 const getThemeSwitchAnimation = (x: number, y: number, isReverse?: boolean) => {
-  const clipPath = [
-    `circle(0% at ${x}px ${y}px)`,
-    `circle(${Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y))}px at ${x}px ${y}px)`,
-  ];
+  const finalCircleRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+  const clipPath = [`circle(0% at ${x}px ${y}px)`, `circle(${finalCircleRadius}px at ${x}px ${y}px)`];
 
   return {
     keyframes: {
@@ -26,9 +24,7 @@ export const ThemeSwitcher = () => {
   const isLightTheme = useComputedColorScheme() === 'light';
 
   const handleClick = (event: MouseEvent) => {
-    const transition = document.startViewTransition(() => {
-      setColorScheme(isLightTheme ? 'dark' : 'light');
-    });
+    const transition = document.startViewTransition(() => setColorScheme(isLightTheme ? 'dark' : 'light'));
 
     transition.ready.then(() => {
       const { keyframes, animation } = getThemeSwitchAnimation(event.clientX, event.clientY, !isLightTheme);
@@ -37,9 +33,8 @@ export const ThemeSwitcher = () => {
   };
 
   return (
-    <ActionIcon onClick={handleClick} variant="default" size="xl" aria-label="Toggle color scheme">
-      <IconSun display={isLightTheme ? 'block' : 'none'} stroke={1.5} />
-      <IconMoon display={!isLightTheme ? 'block' : 'none'} stroke={1.5} />
+    <ActionIcon variant="default" size="xl" onClick={handleClick}>
+      {isLightTheme ? <IconSun stroke={1.5} /> : <IconMoon stroke={1.5} />}
     </ActionIcon>
   );
 };

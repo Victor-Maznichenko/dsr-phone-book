@@ -1,6 +1,5 @@
 import { AppShellHeader, Container, Flex } from '@mantine/core';
-import { ThemeSwitcher } from './ui/theme-switcher';
-import { IconLogo } from './ui';
+import { ThemeSwitcher, IconLogo } from './ui';
 
 export const Header = () => (
   <AppShellHeader py="xs">

@@ -6,3 +6,4 @@ export * from './text-input';
 export * from './input-phone';
 export * from './password-input';
 export * from './image-dropzone';
+export * from './theme-switcher';
