@@ -3,6 +3,8 @@
 {
   "extends": "airbnb-base",
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "func-names": "off",
+    "no-plusplus": "off"
   }
 }

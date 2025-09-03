@@ -47,6 +47,7 @@ const getAllUsers = async (request) => {
       'id',
       'email',
       'about',
+      'avatar',
       'position',
       'department',
       'officePhone',

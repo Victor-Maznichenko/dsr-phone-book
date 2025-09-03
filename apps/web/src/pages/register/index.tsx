@@ -10,7 +10,7 @@ import { useRegisterStore } from '@/store';
 // TODO 2: Местоположение через GOOGLE API или YANDEX API
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(1);
   const { submitRegistration } = useRegisterStore();
 
   const handleNext = () => setActive((current) => (current < 3 ? current + 1 : current));

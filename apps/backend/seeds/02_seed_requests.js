@@ -1,34 +1,34 @@
-exports.seed = async function(knex) {
-  await knex('access_requests').del()
+exports.seed = async function (knex) {
+  await knex('access_requests').del();
 
-  const userIds = await knex('users').pluck('id')
+  const userIds = await knex('users').pluck('id');
 
   if (userIds.length === 0) {
-    console.log('Нет пользователей, нельзя создать запросы')
-    return
+    console.log('Нет пользователей, нельзя создать запросы');
+    return;
   }
 
-  const requests = []
+  const requests = [];
   for (let i = 0; i < 10; i++) {
-    const requesterId = userIds[Math.floor(Math.random() * userIds.length)]
+    const requesterId = userIds[Math.floor(Math.random() * userIds.length)];
 
-    let targetUserId
+    let targetUserId;
     do {
-      targetUserId = userIds[Math.floor(Math.random() * userIds.length)]
-    } while (targetUserId === requesterId)
+      targetUserId = userIds[Math.floor(Math.random() * userIds.length)];
+    } while (targetUserId === requesterId);
 
     requests.push({
       requesterId,
       targetUserId,
-      status: 'pending'
-    })
+      status: 'pending',
+    });
   }
 
-  console.log(requests)
+  console.log(requests);
   try {
-    await knex('access_requests').insert(requests)
-    console.log('Вставка запросов прошла успешно')
+    await knex('access_requests').insert(requests);
+    console.log('Вставка запросов прошла успешно');
   } catch (err) {
-    console.error('Ошибка при вставке запросов:', err)
+    console.error('Ошибка при вставке запросов:', err);
   }
-}
+};
