@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useUsersStore } from '@/store';
 import { DEPARTMENTS } from '@/constants';
 
-const jobColors: Record<string, string> = {
+const DEPARTMENT_COLORS: Record<string, string> = {
   [DEPARTMENTS.HR]: 'pink',
   [DEPARTMENTS.Sales]: 'yellow',
   [DEPARTMENTS.Support]: 'blue',
@@ -31,8 +31,8 @@ export const UsersPage = () => {
       </Table.Td>
 
       <Table.Td>
-        <Badge color={jobColors[user.department]} variant="light">
-          {item.job}
+        <Badge color={DEPARTMENT_COLORS[user.department]} variant="light">
+          {user.department}
         </Badge>
       </Table.Td>
       <Table.Td>

@@ -13,8 +13,6 @@ export const ProtectedRoute = ({ isAdmin }: ProtectedRouteProps) => {
   const accessToken = localStorage.getItem('access_token');
   const isAdminRole = profile?.role === USER_ROLES.Admin;
 
-  console.log('ProtectedRoute', !accessToken, isAdmin && !isAdminRole);
-
   if (!accessToken) {
     return <Navigate to="/login" state={{ from: location }} />;
   }

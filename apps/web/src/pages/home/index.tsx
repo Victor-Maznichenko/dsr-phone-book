@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
 import { format, parseISO } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { format as formatPhone } from '@react-input/mask';
-import { IconPencil, IconTrash, IconExternalLink } from '@tabler/icons-react';
-import { ActionIcon, Anchor, AppShell, Avatar, Badge, Container, Flex, Paper, Table, Text, Title } from '@mantine/core';
+import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { AppShell, Badge, Container, Paper, Table, Title } from '@mantine/core';
 import { useUsersStore } from '@/store';
 import { DEPARTMENTS, phoneMask } from '@/constants';
+import { Tbody } from './TBody';
+import { THead } from './THead';
 
 const departmentsColors: Record<string, string> = {
   [DEPARTMENTS.HR]: 'pink.5',
@@ -14,85 +16,69 @@ const departmentsColors: Record<string, string> = {
   [DEPARTMENTS.Development]: 'teal.5',
 };
 
+const columnHelper = createColumnHelper<UserResponse>();
+const columns = [
+  columnHelper.accessor('id', {
+    size: 60,
+    header: 'ID',
+  }),
+  columnHelper.accessor(({ firstName, lastName }) => `${firstName} ${lastName}`, {
+    size: 250,
+    header: 'Employee',
+  }),
+  columnHelper.accessor('department', {
+    header: 'Department',
+    cell: (props) => (
+      <Badge color={departmentsColors[props.getValue() as string]} variant="light">
+        {props.getValue() as string}
+      </Badge>
+    ),
+  }),
+  columnHelper.accessor('position', {
+    size: 100,
+    header: 'Position',
+  }),
+  columnHelper.accessor('birthday', {
+    size: 100,
+    header: 'Position',
+    cell: (props) => format(parseISO(props.getValue()), 'dd.MM.yyyy'),
+  }),
+  columnHelper.accessor('officePhone', {
+    size: 160,
+    header: 'Office Phone',
+    cell: (props) => formatPhone(props.getValue(), phoneMask),
+  }),
+  columnHelper.accessor('email', { header: 'Email' }),
+];
+
 export const HomePage = () => {
+  const [tableContainerNode, setTableContainerNode] = useState<Nullable<HTMLDivElement>>(null);
   const { users, getUsers } = useUsersStore();
+  // const { isAdmin } = useProfileStore();
+
+  const table = useReactTable({
+    columns,
+    data: users,
+    getCoreRowModel: getCoreRowModel(),
+    debugTable: true,
+  });
 
   useEffect(() => {
     getUsers();
   }, []);
 
-  const rows = users.map((user) => (
-    <Table.Tr style={{ transition: 'background-color 0.25s' }} key={user.id}>
-      <Table.Td maw={250}>
-        <Flex align="center" gap="sm">
-          <Avatar size={30} src={user.avatar} radius={30} />
-          <Text truncate="end" fz="sm" fw={500}>
-            {user.firstName} {user.lastName}
-          </Text>
-        </Flex>
-      </Table.Td>
-
-      <Table.Td>
-        <Badge color={departmentsColors[user.department]} variant="light">
-          {user.department}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
-        <Badge color="gray.6" variant="light">
-          {user.position}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
-        <Text fz="sm">{format(parseISO(user.birthday), 'dd.MM.yyyy')}</Text>
-      </Table.Td>
-      <Table.Td>
-        <Text fz="sm">{formatPhone('79204574579', phoneMask)}</Text>
-      </Table.Td>
-      <Table.Td maw={220}>
-        <Anchor href={`mailto:${user.email}`}>
-          <Text truncate="end" size="xs">
-            {user.email}
-          </Text>
-        </Anchor>
-      </Table.Td>
-      <Table.Td>
-        <Flex justify="flex-end">
-          <ActionIcon variant="subtle" color="gray">
-            <IconPencil size={16} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon variant="subtle" color="red">
-            <IconTrash size={16} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon variant="subtle" color="blue">
-            <IconExternalLink size={16} stroke={1.5} />
-          </ActionIcon>
-        </Flex>
-      </Table.Td>
-    </Table.Tr>
-  ));
-
   return (
     <AppShell.Main py={100} ta="center">
       <Container size="lg">
         <Title mb="xl">Phone book:</Title>
-        <Table.ScrollContainer minWidth={800}>
-          <Paper bdrs={20} withBorder>
+        <Paper bdrs={20} withBorder>
+          <Table.ScrollContainer minWidth={800} ref={setTableContainerNode}>
             <Table highlightOnHover horizontalSpacing="md" verticalSpacing="md">
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Employee</Table.Th>
-                  <Table.Th ta="center">Department</Table.Th>
-                  <Table.Th ta="center">Position</Table.Th>
-                  <Table.Th ta="center">Birthday</Table.Th>
-                  <Table.Th ta="center">Office Phone</Table.Th>
-                  <Table.Th ta="center">Email</Table.Th>
-                  <Table.Th />
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>{rows}</Table.Tbody>
+              <THead table={table} />
+              {tableContainerNode && <Tbody table={table} tableContainerNode={tableContainerNode} />}
             </Table>
-          </Paper>
-        </Table.ScrollContainer>
+          </Table.ScrollContainer>
+        </Paper>
       </Container>
     </AppShell.Main>
   );

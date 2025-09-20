@@ -1,21 +1,28 @@
 import { create } from 'zustand';
 import { getProfile } from '../api/requests';
+import { USER_ROLES } from '../constants';
 
 interface ProfileState {
   profile: Nullable<ProfileResponse>;
+  isAdmin: boolean;
   isLoading: boolean;
   getProfile: () => void;
 }
 
 export const useProfileStore = create<ProfileState>()((set) => ({
   profile: null,
+  isAdmin: false,
   isLoading: false,
   getProfile: async () => {
     set((state) => ({ ...state, isLoading: true }));
     try {
       const response = await getProfile();
       const profile = await response.json();
-      set((state) => ({ ...state, profile }));
+      set((state) => ({
+        ...state,
+        profile,
+        isAdmin: profile.role === USER_ROLES.Admin,
+      }));
     } catch (error) {
       // TODO: заменить на toast
       // eslint-disable-next-line no-console
