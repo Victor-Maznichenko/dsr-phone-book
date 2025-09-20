@@ -1,12 +1,11 @@
 import { format, parseISO } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { format as formatPhone } from '@react-input/mask';
-import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { AppShell, Badge, Container, Paper, Table, Title } from '@mantine/core';
-import { useUsersStore } from '@/store';
-import { DEPARTMENTS, phoneMask } from '@/constants';
-import { Tbody } from './TBody';
-import { THead } from './THead';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { AppShell, Badge, Container, Title } from '@mantine/core';
+import { VirtualizedTable } from '@/shared/ui';
+import { useUsersStore } from '@/shared/store';
+import { DEPARTMENTS, phoneMask } from '@/shared/lib';
 
 const departmentsColors: Record<string, string> = {
   [DEPARTMENTS.HR]: 'pink.5',
@@ -49,19 +48,11 @@ const columns = [
     cell: (props) => formatPhone(props.getValue(), phoneMask),
   }),
   columnHelper.accessor('email', { header: 'Email' }),
-];
+] as ColumnDef<UserResponse>[];
 
 export const HomePage = () => {
-  const [tableContainerNode, setTableContainerNode] = useState<Nullable<HTMLDivElement>>(null);
   const { users, getUsers } = useUsersStore();
   // const { isAdmin } = useProfileStore();
-
-  const table = useReactTable({
-    columns,
-    data: users,
-    getCoreRowModel: getCoreRowModel(),
-    debugTable: true,
-  });
 
   useEffect(() => {
     getUsers();
@@ -71,14 +62,7 @@ export const HomePage = () => {
     <AppShell.Main py={100} ta="center">
       <Container size="lg">
         <Title mb="xl">Phone book:</Title>
-        <Paper bdrs={20} withBorder>
-          <Table.ScrollContainer minWidth={800} ref={setTableContainerNode}>
-            <Table highlightOnHover horizontalSpacing="md" verticalSpacing="md">
-              <THead table={table} />
-              {tableContainerNode && <Tbody table={table} tableContainerNode={tableContainerNode} />}
-            </Table>
-          </Table.ScrollContainer>
-        </Paper>
+        <VirtualizedTable data={users} columns={columns} />
       </Container>
     </AppShell.Main>
   );

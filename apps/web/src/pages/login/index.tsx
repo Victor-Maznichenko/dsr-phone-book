@@ -2,8 +2,8 @@ import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { AppShell, Button, Container, Stack, Text, Title } from '@mantine/core';
-import { PasswordInput, TextInput } from '@/components';
-import { useLoginStore } from '@/store';
+import { PasswordInput, TextInput } from '@/shared/ui';
+import { useLoginStore } from '@/shared/store';
 import { schema } from './lib';
 
 export const LoginPage = ({ isAdmin }: { isAdmin?: boolean }) => {

@@ -1,6 +1,6 @@
 import z from 'zod';
 import { differenceInYears } from 'date-fns';
-import { unmaskPhone } from '@/utils';
+import { unmaskPhone } from '@/shared/lib';
 
 export interface StepContentType {
   handlePrev: () => void;
