@@ -2,3 +2,7 @@
 ::view-transition-new(root) {
   animation: none;
 }
+
+:root {
+  --app-shell-header-height: 4.25rem;
+}

@@ -1,53 +1,44 @@
+import { RefObject } from 'react';
 import { Table } from '@mantine/core';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { flexRender, Row, Table as TableType } from '@tanstack/react-table';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import styles from './styles.module.css';
 
 interface TBodyProps<T> {
   table: TableType<T>;
-  tableContainerNode: HTMLDivElement;
+  scrollRef: RefObject<HTMLDivElement | null>;
 }
 
-const isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
+const renderBodyCells = <T,>(row: Row<T>) =>
+  row.getVisibleCells().map((cell) => (
+    <Table.Td className={styles.tableCell} w={cell.column.getSize()} key={cell.id}>
+      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+    </Table.Td>
+  ));
 
-export const Tbody = <T,>({ table, tableContainerNode }: TBodyProps<T>) => {
+export const Tbody = <T,>({ table, scrollRef }: TBodyProps<T>) => {
   const { rows } = table.getRowModel();
-  const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
+
+  const rowVirtualizer = useWindowVirtualizer({
     count: rows.length,
     estimateSize: () => 75,
-    getScrollElement: () => tableContainerNode,
-    measureElement: !isFirefox ? (element) => element?.getBoundingClientRect().height : undefined,
-    overscan: 5,
+    scrollMargin: scrollRef.current?.offsetTop ?? 0,
+    overscan: 15,
   });
 
   return (
-    <Table.Tbody display="grid" pos="relative" h={rowVirtualizer.getTotalSize()}>
+    <Table.Tbody className={styles.tableBody} h={rowVirtualizer.getTotalSize()}>
       {rowVirtualizer.getVirtualItems().map((virtualRow) => {
         const row = rows[virtualRow.index] as Row<T>;
+
         return (
           <Table.Tr
-            ref={(node) => rowVirtualizer.measureElement(node)}
-            style={{
-              width: '100%',
-              display: 'flex',
-              position: 'absolute',
-              transform: `translateY(${virtualRow.start}px)`,
-              transition: 'background-color 0.25s',
-            }}
+            data-index={virtualRow.index}
+            className={styles.tableBodyRow}
+            style={{ transform: `translateY(${virtualRow.start - rowVirtualizer.options.scrollMargin}px)` }}
             key={row.id}
           >
-            {row.getVisibleCells().map((cell) => (
-              <Table.Td
-                key={cell.id}
-                style={{
-                  display: 'flex',
-                  overflow: 'hidden',
-                  justifyContent: 'center',
-                  width: cell.column.getSize(),
-                }}
-              >
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </Table.Td>
-            ))}
+            {renderBodyCells(row)}
           </Table.Tr>
         );
       })}

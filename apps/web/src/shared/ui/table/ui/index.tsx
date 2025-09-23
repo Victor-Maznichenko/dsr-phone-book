@@ -1,16 +1,26 @@
+import { useEffect, useRef } from 'react';
 import { Paper, Table } from '@mantine/core';
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { useState } from 'react';
 import { THead } from './THead';
 import { Tbody } from './TBody';
+import styles from './styles.module.css';
 
 interface VirtualizedTableProps<T> {
   data: T[];
   columns: ColumnDef<T>[];
+  minWidth: number;
+  getMoreData: () => void;
 }
 
-export const VirtualizedTable = <T,>({ data, columns }: VirtualizedTableProps<T>) => {
-  const [tableContainerNode, setTableContainerNode] = useState<Nullable<HTMLDivElement>>(null);
+const tableStyles = {
+  highlightOnHover: true,
+  horizontalSpacing: 'sm',
+  verticalSpacing: 'md',
+};
+
+  // TODO: Сделать контекскст внутри компонента и нормальные пропсы
+export const VirtualizedTable = <T,>({ data, columns, getMoreData, minWidth = 800 }: VirtualizedTableProps<T>) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const table = useReactTable({
     data,
@@ -19,14 +29,30 @@ export const VirtualizedTable = <T,>({ data, columns }: VirtualizedTableProps<T>
     getCoreRowModel: getCoreRowModel(),
   });
 
+  // Кривая реализация infinite scrolling
+  // TODO: пофиксить
+  useEffect(() => {
+    const scrollHandler = () => {
+      if (scrollRef?.current) {
+        const { scrollHeight, scrollTop, clientHeight } = scrollRef.current;
+        if (scrollHeight - scrollTop - clientHeight < 100) {
+          getMoreData();
+        }
+      }
+    };
+
+    window.addEventListener('scroll', scrollHandler);
+    return () => window.removeEventListener('scroll', scrollHandler);
+  }, []);
+
   return (
-    <Paper bdrs={20} withBorder>
-      <Table.ScrollContainer minWidth={800} ref={setTableContainerNode}>
-        <Table highlightOnHover horizontalSpacing="md" verticalSpacing="md">
+    <Table.ScrollContainer minWidth={minWidth}>
+      <Paper className={styles.tableWrapper} ref={scrollRef} withBorder>
+        <Table {...tableStyles} className={styles.table}>
           <THead table={table} />
-          {tableContainerNode && <Tbody table={table} tableContainerNode={tableContainerNode} />}
+          <Tbody table={table} scrollRef={scrollRef} />
         </Table>
-      </Table.ScrollContainer>
-    </Paper>
+      </Paper>
+    </Table.ScrollContainer>
   );
 };
