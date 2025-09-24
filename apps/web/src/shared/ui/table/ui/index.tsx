@@ -18,7 +18,7 @@ const tableStyles = {
   verticalSpacing: 'md',
 };
 
-  // TODO: Сделать контекскст внутри компонента и нормальные пропсы
+// TODO: Сделать контекскст внутри компонента и нормальные пропсы
 export const VirtualizedTable = <T,>({ data, columns, getMoreData, minWidth = 800 }: VirtualizedTableProps<T>) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 

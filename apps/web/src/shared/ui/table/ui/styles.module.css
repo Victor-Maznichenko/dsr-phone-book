@@ -30,6 +30,7 @@
   transition: background-color 0.25s;
   height: 75px;
   width: 100%;
+  will-change: transform;
 }
 
 .tableCell {
