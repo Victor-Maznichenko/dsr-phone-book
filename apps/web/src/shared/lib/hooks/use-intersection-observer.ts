@@ -7,8 +7,11 @@ interface UseIntersectionObserverOptions {
   options?: IntersectionObserverInit;
 }
 
-export const useIntersectionObserver = ({ callback, options }: UseIntersectionObserverOptions) => {
-  const ref = useRef(null);
+export const useIntersectionObserver = <R extends HTMLElement>({
+  callback,
+  options,
+}: UseIntersectionObserverOptions) => {
+  const ref = useRef<R>(null);
 
   const callbackWrapper = useCallback<IntersectionObserverCallback>(
     (entries, observer) => {

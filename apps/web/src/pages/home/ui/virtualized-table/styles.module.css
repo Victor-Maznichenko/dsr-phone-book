@@ -1,0 +1,32 @@
+.tableWrapper {
+  position: relative;
+}
+
+.table {
+  table-layout: fixed;
+}
+
+.table, .table thead, .table tbody {
+  display: grid;
+}
+
+.table tr {
+  display: flex;
+  align-items: center;
+  transition: background-color 0.25s;
+  will-change: transform;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.table td {
+  overflow: hidden;
+  text-align: left;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0;
+}

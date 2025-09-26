@@ -24,3 +24,11 @@ export const phoneMask = {
   mask: '+7 (___) ___-__-__',
   replacement: { _: /\d/ },
 };
+
+export const departmentsColors: Record<string, string> = {
+  [DEPARTMENTS.HR]: 'pink.5',
+  [DEPARTMENTS.Sales]: 'yellow.4',
+  [DEPARTMENTS.Support]: 'blue.5',
+  [DEPARTMENTS.Marketing]: 'violet.8',
+  [DEPARTMENTS.Development]: 'teal.5',
+};
