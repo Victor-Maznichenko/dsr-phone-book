@@ -31,6 +31,7 @@ interface UserResponse extends UserDTO {
 }
 
 interface ProfileResponse extends Omit<UserDTO, 'hasPersonalAccess'> {
+  id: number;
   role: string;
 }
 

@@ -1,5 +1,5 @@
 import { MouseEvent } from 'react';
-import { ActionIcon, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, ActionIconProps, useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
 import { IconMoon, IconSun } from '@tabler/icons-react';
 
 const getThemeSwitchAnimation = (x: number, y: number, isReverse?: boolean) => {
@@ -19,7 +19,11 @@ const getThemeSwitchAnimation = (x: number, y: number, isReverse?: boolean) => {
   };
 };
 
-export const ThemeSwitcher = () => {
+interface ThemeSwitcherProps extends ActionIconProps {
+  onClick?: (event: MouseEvent) => void;
+}
+
+export const ThemeSwitcher = ({ onClick, ...props }: ThemeSwitcherProps) => {
   const { setColorScheme } = useMantineColorScheme();
   const isLightTheme = useComputedColorScheme() === 'light';
 
@@ -30,10 +34,14 @@ export const ThemeSwitcher = () => {
       const { keyframes, animation } = getThemeSwitchAnimation(event.clientX, event.clientY, !isLightTheme);
       document.documentElement.animate(keyframes, animation);
     });
+
+    if (onClick) {
+      onClick(event);
+    }
   };
 
   return (
-    <ActionIcon variant="default" size="xl" onClick={handleClick}>
+    <ActionIcon variant="default" size="md" onClick={handleClick} {...props}>
       {isLightTheme ? <IconSun stroke={1.5} /> : <IconMoon stroke={1.5} />}
     </ActionIcon>
   );

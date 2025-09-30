@@ -4,9 +4,9 @@ import { IconChevronLeft, IconPlus } from '@tabler/icons-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { Button, Title, Text, ActionIcon, Stack, Flex, Checkbox, Box, UnstyledButton } from '@mantine/core';
 import { DateInput, ImageDropzone, InputPhone, Select, Textarea, TextInput } from '@/shared/ui';
-import { personalFormSchema, StepContentType } from '../lib';
+import { StepContentType } from '../lib';
 import { useRegisterStore } from '@/shared/store';
-import { DEPARTMENTS, POSITIONS, unmaskPhone } from '@/shared/lib';
+import { DEPARTMENTS, POSITIONS, personalFormSchema, unmaskPhone } from '@/shared/lib';
 
 export const PersonalStepContent = ({ handlePrev, handleNext }: Omit<StepContentType, 'handleComplete'>) => {
   const {

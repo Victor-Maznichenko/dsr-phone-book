@@ -1,14 +1,14 @@
-import { Avatar, Badge, Flex, Table, Text } from '@mantine/core';
+import { Avatar, Badge, Flex, Table, TableTrProps, Text } from '@mantine/core';
 import { format as formatPhone } from '@react-input/mask';
 import { format, parseISO } from 'date-fns';
-import { ComponentProps } from 'react';
 import { departmentsColors, phoneMask } from '@/shared/lib';
 import { ActionsCell } from './action-cell';
 
-interface UserRowProps extends ComponentProps<typeof Table.Tr> {
+interface UserRowProps extends TableTrProps {
   data: UserResponse;
 }
 
+/* TODO (QUESTION): При скролле (виртуализированном) изображения долго грузятся отображаясь последовательно сверху вниз можно ли это пофиксить? */
 export const UserRow = ({ data, ...props }: UserRowProps) => (
   <Table.Tr {...props}>
     <Table.Td w={65}>{data.id}</Table.Td>

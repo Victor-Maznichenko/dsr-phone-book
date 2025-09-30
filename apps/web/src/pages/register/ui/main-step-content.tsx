@@ -2,7 +2,7 @@ import { Title, Text, Stack, Button } from '@mantine/core';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { useForm } from '@mantine/form';
 import { PasswordInput, TextInput } from '@/shared/ui';
-import { credentialsFormSchema, StepContentType } from '../lib';
+import { StepContentType, credentialsFormSchema } from '../lib';
 import { useRegisterStore } from '@/shared/store';
 
 export const MainStepContent = ({ handleNext }: Pick<StepContentType, 'handleNext'>) => {

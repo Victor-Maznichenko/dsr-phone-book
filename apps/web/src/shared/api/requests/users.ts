@@ -13,7 +13,7 @@ export const getUsers = ({ limit = 10, offset = 0 }: GetUsersParams = {}) =>
     },
   });
 
-export const getUserById = (id: number) => api.get<UserResponse>(`users/${id}`);
-export const deleteUserById = (id: number) => api.delete<UserResponse>(`users/${id}`);
-export const patchUserById = (id: number) => (userData: UserDTO) =>
+export const getUserById = (id: string) => api.get<UserResponse>(`users/${id}`);
+export const deleteUserById = (id: string) => api.delete<UserResponse>(`users/${id}`);
+export const patchUserById = (id: string) => (userData: UserDTO) =>
   api.patch<UserResponse>(`users/${id}`, { json: userData });

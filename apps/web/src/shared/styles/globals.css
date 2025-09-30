@@ -6,3 +6,12 @@
 :root {
   --app-shell-header-height: 4.25rem;
 }
+
+html { 
+  scrollbar-gutter: stable both-edges;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

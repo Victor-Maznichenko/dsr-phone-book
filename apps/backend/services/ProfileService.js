@@ -15,13 +15,14 @@ const getProfile = async ({ user }) => {
         'id',
         'email',
         'about',
+        'avatar',
         'position',
         'department',
         'officePhone',
         'firstName',
         'lastName',
         'birthday',
-        'personalPhones'
+        'personalPhones',
       )
       .where({ id: user.id })
       .first();
@@ -59,7 +60,7 @@ const patchProfile = async ({ user, updateProfileRequest }) => {
       'firstName',
       'lastName',
       'birthday',
-      'personalPhones'
+      'personalPhones',
     ];
 
     // Оставляем только разрешённые поля
@@ -89,7 +90,7 @@ const patchProfile = async ({ user, updateProfileRequest }) => {
         'firstName',
         'lastName',
         'birthday',
-        'personalPhones'
+        'personalPhones',
       )
       .where({ id: user.id })
       .first();
@@ -103,7 +104,6 @@ const patchProfile = async ({ user, updateProfileRequest }) => {
     throw new AppError(e.message || 'Invalid input', 401);
   }
 };
-
 
 /**
  * Удаление текущего профиля пользователя

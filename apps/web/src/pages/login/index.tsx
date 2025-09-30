@@ -48,13 +48,6 @@ export const LoginPage = ({ isAdmin }: { isAdmin?: boolean }) => {
               {...form.getInputProps('password')}
               error={form.errors.password}
             />
-            <PasswordInput
-              autoComplete="new-password"
-              placeholder="Confirm Password"
-              key={form.key('confirmPassword')}
-              {...form.getInputProps('confirmPassword')}
-              error={form.errors.confirmPassword}
-            />
           </Stack>
           <Button
             type="submit"

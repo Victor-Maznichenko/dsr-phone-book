@@ -103,6 +103,7 @@ const getUserById = async ({ userId, user: currentUser }) => {
         'id',
         'email',
         'about',
+        'avatar',
         'position',
         'department',
         'officePhone',

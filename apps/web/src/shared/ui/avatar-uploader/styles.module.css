@@ -1,0 +1,39 @@
+.avatarUploader {
+    position: relative;
+}
+
+.avatarUploader .avatar, .avatarUploader .dropzone, .avatarUploader .actionIcon {
+    position: absolute;
+}
+
+.avatarUploader .avatar, .dropzone {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.avatarUploader .dropzone {
+    opacity: 0;
+}
+
+.avatarUploader .avatar {
+    z-index: 0;
+}
+
+.avatarUploader .dropzone, .actionIcon {
+    z-index: 1;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.avatarUploader .actionIcon, .avatarUploader .actionIcon:active {
+    right: 0;
+    bottom: 0;
+    transform: translate(20%, 20%);
+}
+
+.avatarUploader:hover .actionIcon{
+    background-color: var(--ai-hover, var(--mantine-primary-color-filled-hover));
+    color: var(--ai-hover-color, var(--ai-color));
+}
+

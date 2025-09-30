@@ -12,12 +12,7 @@ export const useLoginStore = create<LoginState>()((set) => ({
   submitLogin: async (payload, isAdmin) => {
     set(({ isLoading, ...state }) => ({ ...state, isLoading: true }));
     try {
-      let response;
-      if (isAdmin) {
-        response = await postAdminLogin(payload);
-      } else {
-        response = await postLogin(payload);
-      }
+      const response = isAdmin ? await postAdminLogin(payload) : await postLogin(payload);
       localStorage.setItem('access_token', await response.text());
       redirect('/');
     } catch (error) {

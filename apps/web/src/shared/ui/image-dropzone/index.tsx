@@ -1,10 +1,11 @@
+import { clsx } from 'clsx';
 import { useState } from 'react';
 import { Image, Text } from '@mantine/core';
 import { Dropzone, DropzoneProps, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { IconUpload, IconPhoto, IconX, IconPlus } from '@tabler/icons-react';
 import styles from './styles.module.css';
 
-export const ImageDropzone = ({ onDrop, ...props }: DropzoneProps) => {
+export const ImageDropzone = ({ onDrop, className, ...props }: DropzoneProps) => {
   const [imageSrc, setImageSrc] = useState('');
 
   const handleDrop = ([file]: FileWithPath[]) => {
@@ -14,7 +15,7 @@ export const ImageDropzone = ({ onDrop, ...props }: DropzoneProps) => {
 
   return (
     <Dropzone
-      className={styles.dropzone}
+      className={clsx(styles.dropzone, className)}
       onDrop={handleDrop}
       onReject={(files) => console.log('rejected files', files)}
       maxSize={5 * 1024 ** 2}

@@ -22,7 +22,6 @@ const patchProfile = async (request, response) => {
   await Controller.handleRequest(request, response, withAuth(service.patchProfile));
 };
 
-
 module.exports = {
   deleteProfile,
   getProfile,

@@ -1,25 +1,36 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 import { AppShell } from '@mantine/core';
-import { HomePage, LoginPage, NotFoundPage, RegisterPage } from '@/pages';
+import { HomePage, LoginPage, NotFoundPage, RegisterPage, UserPage, ProfilePage } from '@/pages';
 import { ProtectedRoute } from './protected-route';
-import { Footer, Header } from '@/shared/ui';
-import { useAuth } from '@/shared/lib/hooks';
+import { Footer } from '@/shared/ui';
+import { Header } from '@/widgets';
+import { useAuth, ROUTES } from '@/shared/lib';
+
+const Layout = () => (
+  <AppShell>
+    <Header />
+    <Outlet />
+    <Footer />
+  </AppShell>
+);
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: ROUTES.ROOT,
+    element: <Layout />,
     errorElement: <NotFoundPage />,
     children: [
       {
         element: <ProtectedRoute />,
         children: [
           { index: true, element: <HomePage /> },
-          // { path: 'users', element: <UsersPage /> },
+          { path: ROUTES.USER, element: <UserPage /> },
+          { path: ROUTES.PROFILE, element: <ProfilePage /> },
         ],
       },
-      { path: 'login', element: <LoginPage /> },
-      { path: 'register', element: <RegisterPage /> },
-      { path: 'admin/login', element: <LoginPage isAdmin /> },
+      { path: ROUTES.LOGIN, element: <LoginPage /> },
+      { path: ROUTES.REGISTER, element: <RegisterPage /> },
+      { path: ROUTES.ADMIN_LOGIN, element: <LoginPage isAdmin /> },
     ],
   },
 ]);
@@ -27,11 +38,5 @@ const router = createBrowserRouter([
 export const App = () => {
   useAuth();
 
-  return (
-    <AppShell>
-      <Header />
-      <RouterProvider router={router} />
-      <Footer />
-    </AppShell>
-  );
+  return <RouterProvider router={router} />;
 };
