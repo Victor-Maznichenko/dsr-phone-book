@@ -31,8 +31,8 @@ export const CompleteStepContent = ({ handlePrev, handleComplete }: Omit<StepCon
         fullWidth
         variant="filled"
         color="indigo"
-        size="xl"
         radius="lg"
+        size="xl"
         onClick={handleComplete}
         loading={isLoading}
       >

@@ -1,0 +1,26 @@
+.root {
+    padding: 10rem 0;
+    text-align: center;
+}
+
+.title {
+    font-size: var(--mantine-font-size-lg);
+    margin-bottom: 6px;
+}
+
+.description {
+    margin-bottom: 50px;
+    display: inline-block;
+    font-size: var(--mantine-font-size-lg);
+}
+
+.inputs {
+    text-align: left;
+    gap: var(--mantine-spacing-xl);
+}
+
+.button {
+    width: 100%;
+    border-radius: var(--mantine-radius-lg);
+}
+

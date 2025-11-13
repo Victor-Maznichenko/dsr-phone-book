@@ -1,10 +1,10 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
-import { AppShell } from '@mantine/core';
 import { HomePage, LoginPage, NotFoundPage, RegisterPage, UserPage, ProfilePage } from '@/pages';
 import { ProtectedRoute } from './protected-route';
 import { Footer } from '@/shared/ui';
 import { Header } from '@/widgets';
 import { useAuth, ROUTES } from '@/shared/lib';
+import { AppShell } from '@mantine/core';
 
 const Layout = () => (
   <AppShell>

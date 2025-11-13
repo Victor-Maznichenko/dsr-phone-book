@@ -4,7 +4,7 @@ import { App } from './app';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/dropzone/styles.css';
-import '@/shared/styles/globals.css';
+import '@/shared/styles/globals.scss';
 
 const theme = createTheme({
   cursorType: 'pointer',

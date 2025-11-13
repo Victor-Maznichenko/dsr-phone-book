@@ -1,5 +1,3 @@
-// TODO: Я не могу использовать const но обычный enum это хуйня насколько я помню
-
 interface UserDTO {
   email: string;
   firstName: string;

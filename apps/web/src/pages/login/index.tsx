@@ -1,67 +1,50 @@
-import { useForm } from '@mantine/form';
-import { useNavigate } from 'react-router';
-import { zod4Resolver } from 'mantine-form-zod-resolver';
-import { AppShell, Button, Container, Stack, Text, Title } from '@mantine/core';
+import { Button, Container, Stack, Text, Title } from '@mantine/core';
 import { PasswordInput, TextInput } from '@/shared/ui';
-import { useLoginStore } from '@/shared/store';
-import { schema } from './lib';
+import { useLoginForm } from './lib/use-login-form';
+import styles from './styles.module.scss';
 
-export const LoginPage = ({ isAdmin }: { isAdmin?: boolean }) => {
-  const navigate = useNavigate();
-  const primaryColor = isAdmin ? 'red.6' : 'indigo.8';
-  const { isLoading, submitLogin } = useLoginStore();
-  const form = useForm({
-    mode: 'controlled',
-    initialValues: {
-      email: '',
-      password: '',
-    },
-    validate: zod4Resolver(schema),
-  });
-
-  const handleSubmit = async (formData: UserCredentials) => {
-    await submitLogin(formData, isAdmin);
-    navigate('/');
-  };
+export const LoginPage = ({ isAdmin = false }: { isAdmin?: boolean }) => {
+  const accentColor = isAdmin ? 'red.6' : 'indigo.8';
+  const { form, isLoading, handleSubmit } = useLoginForm({ isAdmin });
 
   return (
-    <AppShell.Main py={160} ta="center">
-      <Container maw={550}>
-        <Title c={primaryColor} mb={6}>
+    <main className={styles.root}>
+      <Container size="xs">
+        <Title className={styles.title} c={accentColor}>
           Login here
         </Title>
-        <Text size="lg" display="inline-block" mb={50}>
+        <Text className={styles.description}>
           Welcome back you’ve been missed!
         </Text>
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack ta="left" gap="xl" mb={50}>
+          <Stack className={styles.inputs}>
             <TextInput
-              placeholder="Email"
-              key={form.key('email')}
               {...form.getInputProps('email')}
               error={form.errors.email}
+              key={form.key('email')}
+              placeholder="Email"
+              autoComplete="email"
             />
             <PasswordInput
-              autoComplete="new-password"
-              placeholder="Password"
-              key={form.key('password')}
               {...form.getInputProps('password')}
               error={form.errors.password}
+              key={form.key('password')}
+              placeholder="Password"
+              autoComplete="current-password"
             />
-          </Stack>
           <Button
-            type="submit"
-            fullWidth
-            variant="filled"
-            color={primaryColor}
-            size="xl"
-            radius="lg"
+            className={styles.button}
             loading={isLoading}
+            color={accentColor}
+            variant="filled"
+            type="submit"
+            size="xl"
           >
             Login
           </Button>
+          </Stack>
         </form>
       </Container>
-    </AppShell.Main>
+    </main>
   );
 };

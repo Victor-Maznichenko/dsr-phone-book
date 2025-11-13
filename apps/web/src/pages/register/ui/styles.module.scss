@@ -1,0 +1,49 @@
+.root {
+    text-align: center;
+}
+
+.selectUppercase {
+    :global(.mantine-Select-options) {
+        text-transform: uppercase;
+    }
+    
+    :global(.mantine-Select-input) {
+        text-transform: uppercase;
+    }
+}
+
+.textareaFullHeight {
+    :global(.mantine-Textarea-wrapper) {
+        height: 100%;
+    }
+    
+    :global(.mantine-Textarea-input) {
+        height: 100%;
+    }
+}
+
+.flexBetweenCenter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flexCenter {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    cursor: pointer;
+}
+
+.personalForm, .credentialsForm {
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    gap: var(--mantine-spacing-xl);
+}
+
+.prevStepBtn {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+}

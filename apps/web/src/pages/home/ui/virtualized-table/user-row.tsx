@@ -1,8 +1,9 @@
-import { Avatar, Badge, Flex, Table, TableTrProps, Text } from '@mantine/core';
+import { Avatar, Badge, Table, TableTrProps, Text } from '@mantine/core';
 import { format as formatPhone } from '@react-input/mask';
 import { format, parseISO } from 'date-fns';
 import { departmentsColors, phoneMask } from '@/shared/lib';
 import { ActionsCell } from './action-cell';
+import styles from './styles.module.scss';
 
 interface UserRowProps extends TableTrProps {
   data: UserResponse;
@@ -13,12 +14,12 @@ export const UserRow = ({ data, ...props }: UserRowProps) => (
   <Table.Tr {...props}>
     <Table.Td w={65}>{data.id}</Table.Td>
     <Table.Td w={230}>
-      <Flex align="center" gap="sm">
-        <Avatar size={30} src={data.avatar} radius={30} />
+      <div className={styles.preview}>
+        <Avatar className={styles.avatar} src={data.avatar} />
         <Text truncate="end" fz="sm" fw={500}>
           {data.firstName} {data.lastName}
         </Text>
-      </Flex>
+      </div>
     </Table.Td>
     <Table.Td w={130}>
       <Badge color={departmentsColors[data.department]} variant="light">

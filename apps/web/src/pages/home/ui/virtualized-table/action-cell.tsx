@@ -1,13 +1,14 @@
 import { Link } from 'react-router';
-import { Flex, ActionIcon } from '@mantine/core';
+import { ActionIcon } from '@mantine/core';
 import { IconPencil, IconTrash, IconExternalLink } from '@tabler/icons-react';
 import { useProfileStore } from '@/shared/store';
+import styles from './styles.module.scss';
 
 export const ActionsCell = ({ id }: Pick<UserResponse, 'id'>) => {
   const { isAdmin } = useProfileStore();
 
   return (
-    <Flex justify="flex-end">
+    <div className={styles.actions}>
       {isAdmin && (
         <>
           <ActionIcon variant="subtle" color="gray">
@@ -21,6 +22,6 @@ export const ActionsCell = ({ id }: Pick<UserResponse, 'id'>) => {
       <ActionIcon component={Link} to={`/users/${id}`} variant="subtle" color="blue">
         <IconExternalLink size={16} stroke={1.5} />
       </ActionIcon>
-    </Flex>
+    </div>
   );
 };

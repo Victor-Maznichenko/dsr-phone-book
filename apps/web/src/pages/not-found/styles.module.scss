@@ -14,20 +14,8 @@
   }
 }
 
-.control {
+.button {
   @media (max-width: $mantine-breakpoint-sm) {
     width: 100%;
-  }
-}
-
-.mobileImage {
-  @media (min-width: 48em) {
-    display: none;
-  }
-}
-
-.desktopImage {
-  @media (max-width: 47.99em) {
-    display: none;
   }
 }

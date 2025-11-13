@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { AppShell, Container, Stepper } from '@mantine/core';
+import { Container, Stepper } from '@mantine/core';
 import { PersonalStepContent } from './personal-step-content';
 import { CompleteStepContent } from './complete-step-content';
 import { MainStepContent } from './main-step-content';
 import { useRegisterStore } from '@/shared/store';
+import styles from './styles.module.scss'
 
 // TODO 1: Если все данные уже были заполнены должна быть возможность вернуться на следующие этапы через цифры
 // TODO 2: Местоположение через GOOGLE API или YANDEX API
@@ -22,7 +23,7 @@ export const RegisterPage = () => {
   };
 
   return (
-    <AppShell.Main py={160} ta="center">
+    <main className={styles.root}>
       <Container maw={550}>
         <Stepper
           active={active}
@@ -42,6 +43,6 @@ export const RegisterPage = () => {
           </Stepper.Step>
         </Stepper>
       </Container>
-    </AppShell.Main>
+    </main>
   );
 };

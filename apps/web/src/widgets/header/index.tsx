@@ -1,16 +1,17 @@
 import { Link } from 'react-router';
-import { AppShellHeader, Avatar, Container, Flex, Group } from '@mantine/core';
+import { AppShellHeader, Avatar, Container, Group } from '@mantine/core';
 import { ThemeSwitcher, IconLogo } from '@/shared/ui';
 import { ROUTES } from '../../shared/lib';
 import { useProfileStore } from '@/shared/store';
+import styles from './styles.module.scss';
 
 export const Header = () => {
   const { profile } = useProfileStore();
 
   return (
-    <AppShellHeader py="xs">
+    <AppShellHeader className={styles.root}>
       <Container size="lg">
-        <Flex justify="space-between" align="center">
+        <div className={styles.inner}>
           <Link to={ROUTES.ROOT}>
             <IconLogo />
           </Link>
@@ -20,7 +21,7 @@ export const Header = () => {
               <Avatar src={profile?.avatar} />
             </Link>
           </Group>
-        </Flex>
+        </div>
       </Container>
     </AppShellHeader>
   );

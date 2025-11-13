@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Image, Text } from '@mantine/core';
 import { Dropzone, DropzoneProps, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { IconUpload, IconPhoto, IconX, IconPlus } from '@tabler/icons-react';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 export const ImageDropzone = ({ onDrop, className, ...props }: DropzoneProps) => {
   const [imageSrc, setImageSrc] = useState('');

@@ -1,5 +1,6 @@
 .tableWrapper {
   position: relative;
+  border: 1px solid var(--mantine-color-dark-4);
 }
 
 .table {
@@ -29,4 +30,21 @@
 .bottom {
   position: absolute;
   bottom: 0;
+}
+
+.preview {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
 }

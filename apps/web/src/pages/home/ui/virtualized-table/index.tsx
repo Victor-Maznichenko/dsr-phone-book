@@ -4,13 +4,12 @@ import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { UserRow } from './user-row';
 import { useUsersStore } from '@/shared/store';
 import { useIntersectionObserver } from '@/shared/lib';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 export const VirtualizedTable = () => {
   const { users, getUsers } = useUsersStore();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // TODO: Я не уверен что правильно и лаконично заюзал дженерики в этом месте.
   const { ref: bottomRef } = useIntersectionObserver<HTMLDivElement>({
     callback: ({ isIntersecting }) => (isIntersecting ? getUsers() : undefined),
   });
@@ -31,7 +30,6 @@ export const VirtualizedTable = () => {
       className={styles.tableWrapper}
       style={{ height: `${rowVirtualizer.getTotalSize() + 40}px` }}
       ref={scrollRef}
-      withBorder
     >
       <Table className={styles.table}>
         <Table.Thead>

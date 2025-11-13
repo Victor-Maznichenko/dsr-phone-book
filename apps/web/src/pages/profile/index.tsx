@@ -1,65 +1,31 @@
-import { useForm } from '@mantine/form';
-import { pick } from 'es-toolkit/compat';
-import { zod4Resolver } from 'mantine-form-zod-resolver';
-import { useEffect, useState } from 'react';
-import { AppShell, Button, Text, Container, Flex, Group, Paper, SimpleGrid } from '@mantine/core';
-import { useProfileStore } from '@/shared/store';
-import { DEPARTMENTS, POSITIONS, credentialsFormSchema, personalFormSchema } from '@/shared/lib';
+import { useState } from 'react';
+import { Button, Text, Container, Group, Paper, SimpleGrid } from '@mantine/core';
 import { AvatarUploader, InputPhone, Select, TextInput, Textarea } from '@/shared/ui';
+import { DEPARTMENTS, POSITIONS } from '@/shared/lib';
+import { useProfilePage } from './use-profile-form';
+import styles from './styles.module.scss';
 
 export const ProfilePage = () => {
-  const { profile, getProfile, isLoading } = useProfileStore();
+  const { form, profile } = useProfilePage();
   const [isDisabled, setIsDisabled] = useState(true);
-  const personalFormValues = pick(profile, [
-    'email',
-    'firstName',
-    'lastName',
-    'officePhone',
-    'department',
-    'position',
-    'officeAddress',
-    'about',
-  ]);
-
-  const form = useForm({
-    mode: 'controlled',
-    initialValues: personalFormValues,
-    validate: zod4Resolver(personalFormSchema.extend(credentialsFormSchema.shape)),
-  });
-
-  useEffect(() => {
-    getProfile();
-  }, []);
-
-  useEffect(() => {
-    form.setValues(personalFormValues);
-  }, [isLoading]);
-
-  console.log('isLoading', isLoading);
 
   return (
-    <AppShell.Main py={100} ta="center">
+    <main className={styles.root}>
       <Container size="lg">
-        <Group align="flex-start" wrap="nowrap">
-          <Paper
-            maw="calc(18.75rem * var(--mantine-scale) + var(--mantine-spacing-md) * 2)"
-            radius="md"
-            ta="center"
-            withBorder
-            p="md"
-          >
+        <Group className={styles.inner}>
+          <Paper className={styles.preview}>
             <Text fz="h2" fw={500}>
               {profile?.firstName} {profile?.lastName}
             </Text>
             <AvatarUploader src={profile?.avatar} />
           </Paper>
-          <Paper flex="1 0 auto" radius="md" ta="left" withBorder p="md" style={{ alignSelf: 'stretch' }}>
-            <Flex mb="xl" align="center" justify="space-between">
+          <Paper className={styles.formPaper}>
+            <div className={styles.formHeader}>
               <Text fz="h2" fw={500}>
                 Bio & other details
               </Text>
               <Button onClick={() => setIsDisabled((prev) => !prev)}>Edit</Button>
-            </Flex>
+            </div>
 
             <SimpleGrid cols={2} component="form">
               <TextInput
@@ -106,7 +72,7 @@ export const ProfilePage = () => {
                 key={form.key('department')}
                 error={form.errors.department}
                 {...form.getInputProps('department')}
-                styles={{ options: { textTransform: 'uppercase' }, input: { textTransform: 'uppercase' } }}
+                className={styles.selectUppercase}
               />
 
               <Select
@@ -117,7 +83,7 @@ export const ProfilePage = () => {
                 key={form.key('position')}
                 error={form.errors.position}
                 {...form.getInputProps('position')}
-                styles={{ options: { textTransform: 'uppercase' }, input: { textTransform: 'uppercase' } }}
+                className={styles.selectUppercase}
               />
 
               <InputPhone
@@ -135,19 +101,18 @@ export const ProfilePage = () => {
                 label="About"
                 key={form.key('about')}
                 {...form.getInputProps('about')}
-                style={{ gridColumn: 'span 2' }}
+                className={styles.textareaField}
                 error={form.errors.about}
               />
 
               <Button
-                size="md"
+                className={styles.submitButton}
                 disabled={isDisabled}
-                style={{ gridColumn: 'span 2' }}
                 type="submit"
                 variant="filled"
-                fullWidth
                 color="indigo"
                 radius="lg"
+                size="md"
               >
                 Save
               </Button>
@@ -155,7 +120,7 @@ export const ProfilePage = () => {
           </Paper>
         </Group>
       </Container>
-    </AppShell.Main>
+    </main>
   );
 };
 // Добавить isLoading prop в UserProfile

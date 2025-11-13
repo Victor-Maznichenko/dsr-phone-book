@@ -1,0 +1,51 @@
+.root {
+    padding: 100px 0;
+    text-align: center;
+}
+
+.inner {
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.preview {
+    text-align: center;
+    padding: var(--mantine-spacing-md);
+    border-radius: var(--mantine-radius-md);
+    border: 1px solid var(--mantine-color-dark-4);
+    max-width: calc(18.75rem * var(--mantine-scale) + var(--mantine-spacing-md) * 2);
+}
+
+.formPaper {
+    flex: 1 0 auto;
+    border-radius: var(--mantine-radius-md);
+    text-align: left;
+    border: 1px solid var(--mantine-color-dark-4);
+    padding: var(--mantine-spacing-md);
+    align-self: stretch;
+}
+
+.formHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--mantine-spacing-xl);
+}
+
+.textareaField {
+    grid-column: span 2;
+}
+
+.submitButton {
+    grid-column: span 2;
+}
+
+.selectUppercase {
+    :global(.mantine-Select-options) {
+        text-transform: uppercase;
+    }
+    
+    :global(.mantine-Select-input) {
+        text-transform: uppercase;
+    }
+}

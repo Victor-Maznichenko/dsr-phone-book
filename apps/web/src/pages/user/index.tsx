@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { AppShell, Avatar, Container, Flex, Group, Paper, SimpleGrid, Text } from '@mantine/core';
+import { AppShell, Avatar, Container, Group, Paper, SimpleGrid, Text } from '@mantine/core';
 import { useUserStore } from '@/shared/store';
 import { LabelValue } from '@/shared/ui';
+import styles from './styles.module.scss';
 
 export const UserPage = () => {
   const { id } = useParams();
@@ -16,30 +17,22 @@ export const UserPage = () => {
     return 'Loading...';
   }
 
-  console.log(user?.avatar);
-
   return (
-    <AppShell.Main py={100}>
+    <AppShell.Main className={styles.root}>
       <Container size="lg">
-        <Group align="flex-start" wrap="nowrap">
-          <Paper
-            maw="calc(18.75rem * var(--mantine-scale) + var(--mantine-spacing-md) * 2)"
-            radius="md"
-            ta="center"
-            withBorder
-            p="md"
-          >
+        <Group className={styles.inner}>
+          <Paper className={styles.preview}>
             <Text fz="h2" fw={500}>
               {user?.firstName} {user?.lastName}
             </Text>
             <Avatar w={300} h={300} src={user?.avatar} radius="md" />
           </Paper>
-          <Paper flex="1 0 auto" radius="md" withBorder p="md" style={{ alignSelf: 'stretch' }}>
-            <Flex mb="xl" align="center" justify="space-between">
+          <Paper className={styles.formPaper}>
+            <div className={styles.formHeader}>
               <Text fz="h2" fw={500}>
                 Bio & other details
               </Text>
-            </Flex>
+            </div>
 
             <SimpleGrid cols={2} component="form">
               <LabelValue label="First Name" value={user?.firstName} />

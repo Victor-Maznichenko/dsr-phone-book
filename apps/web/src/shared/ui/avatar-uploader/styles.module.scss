@@ -1,5 +1,7 @@
 .avatarUploader {
     position: relative;
+    width: 300px;
+    height: 300px;
 }
 
 .avatarUploader .avatar, .avatarUploader .dropzone, .avatarUploader .actionIcon {
@@ -35,5 +37,10 @@
 .avatarUploader:hover .actionIcon{
     background-color: var(--ai-hover, var(--mantine-primary-color-filled-hover));
     color: var(--ai-hover-color, var(--ai-color));
+}
+
+.cameraIcon {
+    width: 70%;
+    height: 70%;
 }
 
